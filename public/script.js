@@ -72,128 +72,87 @@ function displayResults(results, situation) {
             </div>
         `;
     };
-    if (situation === '1'){ 
-    html += addResultItem(
-        'Probabilidad del sistema sin unidades',
-        results.p0.toFixed(4),
-        'fa-percentage'
-    );
-
-    html += addResultItem(
-        'Utilización del sistema (ρ)',
-        results.rho.toFixed(4),
-        'fa-percentage'
-    );
-
-    html += addResultItem(
-        'Número promedio en el sistema (L)',
-        results.L.toFixed(4),
-        'fa-users'
-    );
-
-    html += addResultItem(
-        'Tiempo promedio en el sistema (W)',
-        results.W.toFixed(4),
-        'fa-clock'
-    );
-
-    html += addResultItem(
-        'Número promedio en cola (Lq)',
-        results.Lq.toFixed(4),
-        'fa-people-arrows'
-    );
-
-    html += addResultItem(
-        'Probabilidad de encontrar n unidades en el sistema (Pn)',
-        results.Pn.toFixed(4),
-        'fa-hourglass-half'
-    );
-
-    html += addResultItem(
-        'Tiempo promedio en cola (Wq)',
-        results.Wq.toFixed(4),
-        'fa-hourglass-half'
-    );
-
-}else if (situation === '2' || situation === '3') {
-    html += addResultItem(
-        'Probabilidad del sistema sin unidades',
-        results.p0.toFixed(4),
-        'fa-percentage'
-    );
-
-    html += addResultItem(
-        'Utilización del sistema (ρ)',
-        results.rho.toFixed(4),
-        'fa-percentage'
-    );
-
-    html += addResultItem(
-        'Número promedio en el sistema (L)',
-        results.L.toFixed(4),
-        'fa-users'
-    );
-
-    html += addResultItem(
-        'Tiempo promedio en el sistema (W)',
-        results.W.toFixed(4),
-        'fa-clock'
-    );
-
-    html += addResultItem(
-        'Número promedio en cola (Lq)',
-        results.Lq.toFixed(4),
-        'fa-people-arrows'
-    );
-
-    html += addResultItem(
-        'Tiempo promedio en cola (Wq)',
-        results.Wq.toFixed(4),
-        'fa-hourglass-half'
-    );
-        
-    } else {
-        html += addResultItem(
-            'Probabilidad del sistema sin unidades',
-            results.p0.toFixed(4),
-            'fa-percentage'
-        );
     
-        html += addResultItem(
+    // Resultados comunes para todas las situaciones
+    const commonResults = () => {
+        let commonHtml = '';
+        
+        
+        commonHtml += addResultItem(
             'Utilización del sistema (ρ)',
             results.rho.toFixed(4),
             'fa-percentage'
         );
     
-        html += addResultItem(
+        commonHtml += addResultItem(
             'Número promedio en el sistema (L)',
             results.L.toFixed(4),
             'fa-users'
         );
     
-        html += addResultItem(
+        commonHtml += addResultItem(
             'Tiempo promedio en el sistema (W)',
             results.W.toFixed(4),
             'fa-clock'
         );
     
-        html += addResultItem(
+        commonHtml += addResultItem(
             'Número promedio en cola (Lq)',
             results.Lq.toFixed(4),
             'fa-people-arrows'
         );
-        html += addResultItem(
-            'Tasa efectiva de llegadas (λ_eff)',
-            results.lambdaEff.toFixed(4),
-            'fa-stream'
-        );
-
-        html += addResultItem(
-            'Probabilidad de sistema lleno (P_K)',
-            results.PK.toFixed(4),
-            'fa-chart-line'
-        );
-    }
-
+    
+        return commonHtml;
+    };
+    
+    // Resultados adicionales según la situación
+    const specificResults = (situation) => {
+        let specificHtml = '';
+        if(situation !== '4'){
+            specificHtml += addResultItem(
+                'Probabilidad del sistema sin unidades(P0)',
+                results.p0.toFixed(4),
+                'fa-percentage'
+            );
+        }
+        if (situation === '1') {
+            specificHtml += addResultItem(
+                'Probabilidad de encontrar n unidades en el sistema (Pn)',
+                results.Pn.toFixed(4),
+                'fa-hourglass-half'
+            );
+            
+            specificHtml += addResultItem(
+                'Tiempo promedio en cola (Wq)',
+                results.Wq.toFixed(4),
+                'fa-hourglass-half'
+            );
+    
+        } else if (situation === '2' || situation === '3' || situation === '4') {
+            specificHtml += addResultItem(
+                'Tiempo promedio en cola (Wq)',
+                results.Wq.toFixed(4),
+                'fa-hourglass-half'
+            );
+    
+        } else {
+            specificHtml += addResultItem(
+                'Tasa efectiva de llegadas (λ_eff)',
+                results.lambdaEff.toFixed(4),
+                'fa-stream'
+            );
+    
+            specificHtml += addResultItem(
+                'Probabilidad de sistema lleno (P_K)',
+                results.PK.toFixed(4),
+                'fa-chart-line'
+            );
+        }
+    
+        return specificHtml;
+    };
+    
+    // Generar el HTML final
+    html = commonResults() + specificResults(situation);
     resultContent.innerHTML = html;
 }
